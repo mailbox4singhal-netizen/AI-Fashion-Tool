@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Fashion Platform — Preview</title>
+<link rel="stylesheet" href="https://fonts.cdnfonts.com/css/aptos">
+<style>
+/* ============================================================
+   AI FASHION — preview (standalone, same design system as app)
+   ============================================================ */
+:root{
+  --pink:#FF1493; --pink-soft:#F72585;
+  --violet:#8A2BE2; --violet-deep:#4A0E8F; --violet-soft:#B06FFF;
+  --neon:#39FF14; --neon-soft:#8BFF6E;
+  --bg-1:#05030d; --bg-2:#120628; --bg-3:#1e0a3c;
+  --glass-bg:rgba(255,255,255,.06);
+  --glass-bg-hi:rgba(255,255,255,.10);
+  --glass-border:rgba(255,255,255,.14);
+  --glass-border-hi:rgba(255,20,147,.35);
+  --text:#f5f0ff; --text-dim:#b8a8d4; --text-mute:#756c8c;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100vh}
+body{
+  font-family:'Aptos','Aptos Display',-apple-system,BlinkMacSystemFont,'Segoe UI Variable','Segoe UI',system-ui,sans-serif;
+  color:var(--text); letter-spacing:.01em;
+  background:
+    radial-gradient(1200px 800px at 10% -10%,rgba(255,20,147,.18),transparent 60%),
+    radial-gradient(900px 700px at 90% 0%,rgba(138,43,226,.22),transparent 60%),
+    radial-gradient(700px 900px at 50% 110%,rgba(57,255,20,.10),transparent 60%),
+    linear-gradient(180deg,var(--bg-1),var(--bg-2) 60%,var(--bg-3));
+  background-attachment:fixed; overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body::before,body::after{content:"";position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0}
+body::before{width:420px;height:420px;background:radial-gradient(circle,var(--pink),transparent 70%);top:-80px;left:-80px;animation:f1 18s var(--ease) infinite alternate}
+body::after{width:520px;height:520px;background:radial-gradient(circle,var(--violet),transparent 70%);bottom:-120px;right:-120px;animation:f2 22s var(--ease) infinite alternate}
+@keyframes f1{to{transform:translate(120px,80px) scale(1.2)}}
+@keyframes f2{to{transform:translate(-100px,-60px) scale(1.15)}}
+
+h1,h2,h3{font-family:'Aptos Display','Aptos',system-ui,sans-serif;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+h1{font-size:clamp(2rem,4.5vw,3rem)} h2{font-size:clamp(1.4rem,2.8vw,1.9rem)} h3{font-size:1.15rem}
+
+.eyebrow{text-transform:uppercase;letter-spacing:.2em;font-size:.7rem;color:var(--neon);font-weight:600}
+.gradient-text{background:linear-gradient(135deg,var(--pink),var(--violet-soft) 50%,var(--neon));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.glass{background:var(--glass-bg);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--glass-border);border-radius:22px;box-shadow:0 8px 32px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08);position:relative;overflow:hidden}
+.glass::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(255,20,147,.06) 0%,transparent 40%,rgba(57,255,20,.04) 100%)}
+.glass-hi{background:var(--glass-bg-hi);border-color:var(--glass-border-hi);box-shadow:0 12px 40px rgba(255,20,147,.15),0 0 0 1px rgba(255,20,147,.18),inset 0 1px 0 rgba(255,255,255,.12)}
+
+.btn{font-family:inherit;font-weight:600;font-size:.95rem;letter-spacing:.02em;padding:.8rem 1.3rem;border-radius:12px;border:1px solid var(--glass-border);background:var(--glass-bg-hi);color:var(--text);cursor:pointer;transition:all .25s var(--ease);display:inline-flex;align-items:center;gap:.6rem;backdrop-filter:blur(12px)}
+.btn:hover{transform:translateY(-2px);border-color:var(--pink);box-shadow:0 6px 24px rgba(255,20,147,.35)}
+.btn-primary{background:linear-gradient(135deg,var(--pink) 0%,var(--violet) 100%);border-color:transparent;color:#fff;font-weight:700;box-shadow:0 4px 20px rgba(255,20,147,.4)}
+.btn-primary:hover{box-shadow:0 8px 32px rgba(255,20,147,.55),0 0 0 1px var(--neon)}
+.btn-neon{background:transparent;border:1px solid var(--neon);color:var(--neon);text-shadow:0 0 8px rgba(57,255,20,.6)}
+.btn-neon:hover{background:rgba(57,255,20,.12);box-shadow:0 0 24px rgba(57,255,20,.4)}
+.btn-ghost{background:transparent}
+
+.input,.select,.textarea{font-family:inherit;font-size:1rem;color:var(--text);background:rgba(255,255,255,.05);border:1px solid var(--glass-border);border-radius:12px;padding:.85rem 1.05rem;outline:none;transition:all .2s var(--ease);width:100%;backdrop-filter:blur(10px)}
+.input::placeholder,.textarea::placeholder{color:var(--text-mute)}
+.input:focus,.select:focus,.textarea:focus{border-color:var(--pink);background:rgba(255,255,255,.08);box-shadow:0 0 0 3px rgba(255,20,147,.18)}
+.textarea{resize:vertical;min-height:80px}
+.select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23FF1493' d='M6 8L0 0h12z'/></svg>");background-repeat:no-repeat;background-position:right 1.1rem center;padding-right:2.5rem}
+.select option{background:var(--bg-2);color:var(--text)}
+.field{display:flex;flex-direction:column;gap:.4rem}
+.field label{font-size:.75rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text-dim);font-weight:600}
+
+.container{max-width:1240px;margin:0 auto;padding:1.2rem;position:relative;z-index:1}
+.stack>*+*{margin-top:1rem} .stack-lg>*+*{margin-top:1.8rem}
+.row{display:flex;gap:1rem;flex-wrap:wrap}
+.row-between{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.grid{display:grid;gap:1.1rem}
+.grid-2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.grid-3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.grid-4{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.padded{padding:1.6rem} .padded-sm{padding:1.1rem}
+
+.pill{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:999px;font-size:.76rem;font-weight:600;border:1px solid var(--glass-border);background:var(--glass-bg);backdrop-filter:blur(10px)}
+.pill-pink{border-color:var(--pink);color:var(--pink);box-shadow:0 0 12px rgba(255,20,147,.25)}
+.pill-violet{border-color:var(--violet-soft);color:var(--violet-soft)}
+.pill-neon{border-color:var(--neon);color:var(--neon);text-shadow:0 0 6px rgba(57,255,20,.5)}
+
+.nav{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.6rem;margin:1rem auto;max-width:1240px;border-radius:20px;position:relative;z-index:10}
+.nav-brand{display:flex;align-items:center;gap:.7rem;font-weight:700}
+.nav-logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--pink),var(--violet),var(--neon));display:grid;place-items:center;color:#0a0a0f;font-weight:900;box-shadow:0 0 24px rgba(255,20,147,.4)}
+.nav-links{display:flex;gap:.3rem;align-items:center}
+.nav-link{color:var(--text-dim);padding:.45rem .95rem;border-radius:10px;font-size:.9rem;cursor:pointer;transition:all .2s var(--ease);font-weight:500;border:1px solid transparent;background:none}
+.nav-link:hover{color:var(--text);background:var(--glass-bg)}
+.nav-link.active{color:var(--neon);background:rgba(57,255,20,.08);border-color:rgba(57,255,20,.3)}
+
+.confidence-ring{--size:90px;--p:.85;width:var(--size);height:var(--size);border-radius:50%;background:conic-gradient(from 0deg,var(--pink) 0deg,var(--violet) calc(var(--p)*180deg),var(--neon) calc(var(--p)*360deg),rgba(255,255,255,.08) calc(var(--p)*360deg));display:grid;place-items:center;position:relative}
+.confidence-ring::before{content:"";position:absolute;inset:6px;border-radius:50%;background:rgba(10,5,25,.85);backdrop-filter:blur(10px)}
+.confidence-ring-val{position:relative;z-index:1;font-weight:700;font-size:1.3rem;background:linear-gradient(135deg,var(--pink),var(--neon));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.swatch{border-radius:16px;padding:1rem .95rem .85rem;min-height:100px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid rgba(255,255,255,.2);box-shadow:0 6px 20px rgba(0,0,0,.25)}
+.swatch-name{font-weight:700;font-size:.92rem}
+.swatch-hex{font-family:ui-monospace,monospace;font-size:.75rem;opacity:.85}
+
+.design-card{padding:1.3rem;display:flex;flex-direction:column;gap:.85rem;transition:all .3s var(--ease)}
+.design-card:hover{transform:translateY(-4px);border-color:var(--pink);box-shadow:0 16px 40px rgba(138,43,226,.25)}
+.design-hero{height:150px;border-radius:14px;background-size:200% 200%;animation:heroShift 8s ease-in-out infinite;position:relative;overflow:hidden}
+.design-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.5))}
+@keyframes heroShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+.trend-item{display:flex;justify-content:space-between;align-items:center;padding:.9rem 1.1rem;border-radius:14px;background:var(--glass-bg);border:1px solid var(--glass-border);transition:all .2s var(--ease)}
+.trend-item:hover{border-color:var(--neon);background:rgba(57,255,20,.04)}
+.trend-growth{font-weight:700;color:var(--neon);text-shadow:0 0 8px rgba(57,255,20,.5)}
+
+.meter{width:100%;height:8px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden}
+.meter-fill{height:100%;background:linear-gradient(90deg,var(--pink),var(--violet),var(--neon));box-shadow:0 0 12px rgba(57,255,20,.5)}
+
+.stat-value{font-size:1.9rem;font-weight:700;background:linear-gradient(135deg,var(--pink),var(--neon));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.stat-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text-dim);font-weight:600;margin-top:.3rem}
+
+.tp-row{display:grid;grid-template-columns:170px 1fr;padding:.7rem 0;border-bottom:1px dashed rgba(255,255,255,.08);gap:1rem}
+.tp-row:last-child{border-bottom:none}
+.tp-label{color:var(--text-dim);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;font-weight:600}
+
+.alert{padding:.9rem 1.1rem;border-radius:14px;border:1px solid;display:flex;gap:.7rem;align-items:flex-start;backdrop-filter:blur(16px)}
+.alert-ok{border-color:var(--neon);background:rgba(57,255,20,.06)}
+
+.text-dim{color:var(--text-dim)} .text-mute{color:var(--text-mute)} .text-neon{color:var(--neon)}
+.text-sm{font-size:.88rem} .text-xs{font-size:.75rem} .center{text-align:center}
+
+.tab{display:none} .tab.active{display:block;animation:fadeIn .5s var(--ease) both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.banner{padding:.55rem 1rem;font-size:.78rem;color:var(--text-dim);background:rgba(255,20,147,.08);border:1px solid rgba(255,20,147,.2);border-radius:999px;display:inline-flex;gap:.4rem;align-items:center}
+ul.tp-val{padding-left:1.1rem}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--pink),var(--violet));border-radius:5px}
+@media (max-width:720px){.tp-row{grid-template-columns:1fr;gap:.2rem}}
+</style>
+</head>
+<body>
+
+<nav class="nav glass">
+  <div class="nav-brand">
+    <div class="nav-logo">F</div>
+    <div>
+      <div>Fashion<span class="text-neon">/AI</span></div>
+      <div class="text-xs text-mute" style="font-weight:400">Intelligence · Design</div>
+    </div>
+  </div>
+  <div class="nav-links">
+    <button class="nav-link active" data-tab="designer">Designer</button>
+    <button class="nav-link" data-tab="results">Results</button>
+    <button class="nav-link" data-tab="admin">Admin</button>
+    <span class="pill pill-violet" style="margin-left:.5rem">Demo Designer</span>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="banner" style="margin-bottom:1rem">
+    ✦ <span>Interactive preview — click <b>Generate</b>, tabs, and try a design modifier.</span>
+  </div>
+</div>
+
+<!-- ======================= DESIGNER TAB ======================= -->
+<div class="tab active" id="tab-designer">
+  <div class="container stack-lg">
+    <div>
+      <div class="eyebrow">Design Studio · F5</div>
+      <h1 class="gradient-text">Create a design</h1>
+      <p class="text-dim">Describe the brief — we'll return regional trends, a trend-aware palette,
+        three design concepts, and a full tech pack. <span class="text-neon">Response under 5 seconds.</span></p>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="glass padded stack">
+        <div class="field">
+          <label>Step 1 · Describe the design</label>
+          <textarea class="textarea" id="prompt" rows="3">summer festive wear</textarea>
+        </div>
+        <div>
+          <label class="text-xs text-dim" style="text-transform:uppercase;letter-spacing:.15em;font-weight:600">or start from a template</label>
+          <div class="row" style="margin-top:6px;gap:.4rem">
+            <button class="pill pill-violet tpl" data-p="urban streetwear capsule, oversized silhouettes">Streetwear</button>
+            <button class="pill pill-violet tpl" data-p="festive ethnic wear with contemporary twist">Ethnic</button>
+            <button class="pill pill-violet tpl" data-p="tailored formal business attire, modern cut">Formal</button>
+            <button class="pill pill-violet tpl" data-p="athflow layering for commuter lifestyle">Athleisure</button>
+            <button class="pill pill-violet tpl" data-p="Y2K nostalgia edit, low-rise, metallic accents">Y2K</button>
+            <button class="pill pill-violet tpl" data-p="sustainable capsule using dead-stock and organic fabrics">Sustainable</button>
+          </div>
+        </div>
+
+        <div class="grid grid-3">
+          <div class="field"><label>Region</label>
+            <select class="select" id="region">
+              <option>India</option><option>Europe</option><option>USA</option><option>Asia</option><option>Global</option>
+            </select></div>
+          <div class="field"><label>Category</label>
+            <select class="select" id="category">
+              <option>women</option><option>men</option><option>kids</option><option>unisex</option>
+            </select></div>
+          <div class="field"><label>Season</label>
+            <select class="select" id="season"><option>SS25</option><option>AW25</option><option>SS26</option><option>Resort</option></select></div>
+        </div>
+
+        <button class="btn btn-primary" id="generate" style="align-self:flex-start">✨ Generate</button>
+      </div>
+
+      <div class="glass padded stack">
+        <div class="eyebrow">What happens next</div>
+        <h2>The AI Orchestrator runs in parallel</h2>
+        <p class="text-dim text-sm">Fans out to four specialized engines simultaneously, aggregates
+          outputs with confidence scoring, and applies fallback logic if confidence falls below threshold.</p>
+        <ul style="list-style:none;padding:0;display:grid;gap:.6rem">
+          <li class="trend-item"><div><div style="font-size:1.3rem">🌍</div><div style="font-weight:600">Global Trend Intelligence</div><div class="text-xs text-dim">Region + seasonal forecast with growth signals</div></div></li>
+          <li class="trend-item"><div><div style="font-size:1.3rem">🎨</div><div style="font-weight:600">Color Intelligence</div><div class="text-xs text-dim">Culturally tuned, trend-aware palette</div></div></li>
+          <li class="trend-item"><div><div style="font-size:1.3rem">✏️</div><div style="font-weight:600">AI Design Studio</div><div class="text-xs text-dim">3 concept designs · refinable via prompts</div></div></li>
+          <li class="trend-item"><div><div style="font-size:1.3rem">📋</div><div style="font-weight:600">Smart Tech Pack</div><div class="text-xs text-dim">Construction, trims, measurements, care</div></div></li>
+        </ul>
+        <div class="text-xs text-mute">Every call is audit-logged with versioned prompts &amp; model version.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= RESULTS TAB ======================= -->
+<div class="tab" id="tab-results">
+  <div class="container stack-lg">
+    <div class="glass glass-hi padded">
+      <div class="row-between">
+        <div>
+          <div class="eyebrow">Request · a3f7c1e2</div>
+          <h1 style="margin-top:6px"><span class="gradient-text" id="res-prompt">summer festive wear</span></h1>
+          <div class="row" style="margin-top:10px">
+            <span class="pill pill-pink">🌍 <span id="res-region">India</span></span>
+            <span class="pill pill-violet">Status · complete</span>
+            <span class="pill pill-neon">Orchestrator v1.0</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem">
+          <div style="text-align:right">
+            <div class="eyebrow" style="color:var(--pink)">AI Confidence</div>
+            <div class="text-xs text-dim">aggregate across all 4 modules</div>
+          </div>
+          <div class="confidence-ring" id="ring" style="--p:.84"><span class="confidence-ring-val">84%</span></div>
+        </div>
+      </div>
+      <p class="text-dim text-sm" style="margin-top:14px" id="res-explain">
+        <b class="text-neon">Why these results —</b> Based on India market signals for SS25 and the prompt, the model weighted regional consumer data, social-media signal velocity, and retail search volume to surface these 3 trends.
+      </p>
+    </div>
+
+    <section class="stack">
+      <div><div class="eyebrow">F2 · Global Trend Intelligence</div><h2>Trends for <span id="res-region2">India</span></h2></div>
+      <div class="grid grid-3" id="trend-grid"></div>
+    </section>
+
+    <section class="stack">
+      <div><div class="eyebrow">F4 · Color Intelligence</div><h2>Trend-aware palette</h2></div>
+      <div class="grid grid-4" id="palette-grid"></div>
+    </section>
+
+    <section class="stack">
+      <div class="row-between">
+        <div><div class="eyebrow">F5 · AI Design Studio</div><h2>Design concepts</h2></div>
+        <span class="text-xs text-mute">Type a refinement to each card</span>
+      </div>
+      <div class="grid grid-3" id="design-grid"></div>
+    </section>
+
+    <section class="glass padded stack">
+      <div class="row-between">
+        <div>
+          <div class="eyebrow">F6 · Smart Tech Pack</div>
+          <h2 id="tp-title">Festive Ethnic Fusion — Women Piece</h2>
+          <div class="text-sm text-dim">Industry-standard, editable, exportable</div>
+        </div>
+        <button class="btn btn-neon">⬇ Export JSON</button>
+      </div>
+      <div id="tp-body"></div>
+    </section>
+  </div>
+</div>
+
+<!-- ======================= ADMIN TAB ======================= -->
+<div class="tab" id="tab-admin">
+  <div class="container stack-lg">
+    <div>
+      <div class="eyebrow">F9 · Platform Intelligence</div>
+      <h1 class="gradient-text">Admin dashboard</h1>
+    </div>
+
+    <div class="grid grid-4">
+      <div class="glass padded"><div class="stat-value">142</div><div class="stat-label">Total Requests</div></div>
+      <div class="glass padded"><div class="stat-value">38</div><div class="stat-label">Active Users</div></div>
+      <div class="glass padded"><div class="stat-value">83.1%</div><div class="stat-label">Avg Confidence</div></div>
+      <div class="glass padded"><div class="stat-value">2.1%</div><div class="stat-label">Error Rate</div></div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="glass padded stack">
+        <div class="eyebrow">Requests by region</div><h3>Global activity</h3>
+        <div class="stack" id="region-bars"></div>
+      </div>
+      <div class="glass padded stack">
+        <div class="eyebrow">Model health</div><h3>Confidence distribution</h3>
+        <div class="stack" id="conf-bars"></div>
+      </div>
+    </div>
+
+    <div class="glass padded stack">
+      <div class="row-between">
+        <div><div class="eyebrow">F10 · Audit trail</div><h3>Recent AI calls</h3></div>
+        <button class="btn btn-neon">⬇ Export CSV</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse">
+          <thead>
+            <tr>
+              <th style="text-align:left;padding:.7rem 1rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text-dim);font-weight:600;border-bottom:1px solid rgba(255,255,255,.06)">When</th>
+              <th style="text-align:left;padding:.7rem 1rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text-dim);font-weight:600;border-bottom:1px solid rgba(255,255,255,.06)">Request</th>
+              <th style="text-align:left;padding:.7rem 1rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text-dim);font-weight:600;border-bottom:1px solid rgba(255,255,255,.06)">Model</th>
+              <th style="text-align:left;padding:.7rem 1rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text-dim);font-weight:600;border-bottom:1px solid rgba(255,255,255,.06)">Prompt ver.</th>
+              <th style="text-align:left;padding:.7rem 1rem;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--text-dim);font-weight:600;border-bottom:1px solid rgba(255,255,255,.06)">Conf.</th>
+            </tr>
+          </thead>
+          <tbody id="audit-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ================================================================
+// Mock data + interactions (mirrors the real backend response shape)
+// ================================================================
+
+const TREND_BANK = {
+  India: [
+    { name: 'Festive Ethnic Fusion', forecast: 'Rising demand through festive season', growth: .28 },
+    { name: 'Neo-Tropical Prints',   forecast: 'Monsoon collections trending up',      growth: .19 },
+    { name: 'Handloom Revival',      forecast: 'Steady growth in premium segment',     growth: .14 },
+    { name: 'Indo-Streetwear',       forecast: 'Breakout category for Gen Z',          growth: .33 },
+  ],
+  Europe: [
+    { name: 'Quiet Luxury 2.0',      forecast: 'Stable demand in premium',             growth: .11 },
+    { name: 'Upcycled Denim',        forecast: 'Sustainability-led growth',            growth: .22 },
+    { name: 'Editorial Minimalism',  forecast: 'Editorial press cycle peak',           growth: .09 },
+    { name: 'Avant-Folk Tailoring',  forecast: 'Niche but accelerating',               growth: .17 },
+  ],
+  USA: [
+    { name: 'Athflow Layering',      forecast: 'Post-athleisure evolution',            growth: .24 },
+    { name: 'Y2K Nostalgia Edit',    forecast: 'Gen Z anchor trend',                   growth: .31 },
+    { name: 'Workwear Reinterpreted',forecast: 'Steady core demand',                   growth: .13 },
+    { name: 'Pastel Prep',           forecast: 'Spring/Summer breakout',               growth: .20 },
+  ],
+  Asia: [
+    { name: 'Soft Cyber',            forecast: 'Rapid growth across K-fashion',        growth: .35 },
+    { name: 'Techwear Lite',         forecast: 'Urban commuter staple',                growth: .21 },
+    { name: 'Modern Hanbok Cues',    forecast: 'Premium cultural crossover',           growth: .18 },
+    { name: 'Oversized Prep',        forecast: 'Campus-driven momentum',               growth: .14 },
+  ],
+  Global: [
+    { name: 'Gorpcore Refined',      forecast: 'Outdoor crossover into city wear',     growth: .25 },
+    { name: 'Chrome Futurism',       forecast: 'Editorial + clubwear convergence',     growth: .19 },
+    { name: 'Soft Tailoring',        forecast: 'Workwear humanized',                   growth: .16 },
+    { name: 'Bio-Textiles Spotlight',forecast: 'Sustainability leader trend',          growth: .22 },
+  ],
+};
+const PALETTES = {
+  India: [
+    [['#6A0572','Royal Plum'],['#F18701','Saffron'],['#3A506B','Monsoon'],['#F5D0C5','Rose Quartz'],['#0B3954','Deep Teal']],
+  ],
+  Europe: [
+    [['#283618','Forest'],['#606C38','Olive'],['#FEFAE0','Parchment'],['#DDA15E','Honey'],['#BC6C25','Rust']],
+  ],
+  USA: [
+    [['#F72585','Hot Pink'],['#7209B7','Ultraviolet'],['#3A0CA3','Electric Indigo'],['#4CC9F0','Ice'],['#F1FAEE','Off White']],
+  ],
+  Asia: [
+    [['#0A0A0A','Obsidian'],['#C0C0C0','Chrome'],['#39FF14','Neon Green'],['#FF00E5','Hyper Pink'],['#1E1E2E','Midnight']],
+  ],
+  Global: [
+    [['#FF1493','Neon Pink'],['#8A2BE2','Violet'],['#39FF14','Neon Green'],['#FFFFFF','Pure White'],['#0A0A0F','Void']],
+  ],
+};
+const SILHOUETTES = {
+  women: ['A-line midi','Boxy cropped','Drop-shoulder oversized','Column silhouette'],
+  men:   ['Relaxed straight','Slim tapered','Elongated overshirt','Pleated trouser'],
+  kids:  ['Easy raglan','Elasticated waist','Playful ruffled','Jumper dress'],
+  unisex:['Boxy oversized','Straight-leg trouser','Utility cargo','Longline overshirt'],
+};
+const FABRICS = ['Organic cotton jersey','Recycled polyester twill','Linen-blend weave','Bamboo-viscose knit','Satin-finish crepe','Dead-stock denim'];
+const CONSTR = ['French seams on side panels','Twin-needle topstitch along hem','Raglan sleeve construction','Bound neckline with self-fabric binding','Inseam pockets with bartacks'];
+const TRIMS  = ['YKK metal zipper — matte black','Corozo 4-hole button, 15L','Satin woven main label','Recycled poly drawcord','Woven care label'];
+
+function pick(arr, n=arr.length){ return arr.slice().sort(()=>Math.random()-.5).slice(0,n); }
+function readable(hex){ const h=hex.replace('#',''); const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16); return (.299*r+.587*g+.114*b)/255>.6?'#0a0a0f':'#fff'; }
+
+function render(prompt, region, category, season){
+  document.getElementById('res-prompt').textContent = prompt;
+  document.getElementById('res-region').textContent = region;
+  document.getElementById('res-region2').textContent = region;
+  if (season) {
+    document.getElementById('res-explain').innerHTML = `
+      <b class="text-neon">Why these results —</b> Based on ${region} market signals for ${season} and the prompt, the model weighted regional consumer data, social-media signal velocity, and retail search volume to surface these 3 trends.
+    `;
+  }
+
+  const trends = pick(TREND_BANK[region], 3);
+  const palette = PALETTES[region][0];
+  const sils = SILHOUETTES[category] || SILHOUETTES.unisex;
+  const hexes = palette.slice(0,4).map(([h])=>h);
+  const conf = .72 + Math.random()*.22;
+
+  // confidence ring
+  const ring = document.getElementById('ring');
+  ring.style.setProperty('--p', conf);
+  ring.querySelector('.confidence-ring-val').textContent = Math.round(conf*100)+'%';
+
+  // trends
+  document.getElementById('trend-grid').innerHTML = trends.map((t,i)=>`
+    <div class="glass padded stack">
+      <span class="eyebrow">Trend #${i+1}</span>
+      <h3>${t.name}</h3>
+      <p class="text-sm text-dim">${t.forecast}</p>
+      <div class="row-between">
+        <span class="text-xs text-mute">Predicted growth</span>
+        <span class="trend-growth">+${Math.round(t.growth*100)}%</span>
+      </div>
+    </div>`).join('');
+
+  // palette
+  document.getElementById('palette-grid').innerHTML = palette.map(([h,n],i)=>{
+    const w = [.32,.26,.20,.14,.08][i];
+    return `<div class="swatch" style="background:${h};color:${readable(h)}">
+      <div><div class="swatch-name">${n}</div><div class="swatch-hex">${h.toUpperCase()}</div></div>
+      <div class="text-xs" style="opacity:.85">${Math.round(w*100)}% share</div>
+    </div>`;
+  }).join('');
+
+  // designs
+  document.getElementById('design-grid').innerHTML = trends.map((t,i)=>{
+    const grad = `linear-gradient(135deg, ${hexes.join(', ')})`;
+    const sil = sils[i % sils.length];
+    const fab = FABRICS[Math.floor(Math.random()*FABRICS.length)];
+    return `<div class="glass design-card">
+      <div class="design-hero" style="background:${grad}" aria-hidden></div>
+      <div><h3 style="margin-bottom:6px">${t.name} — Look 0${i+1}</h3>
+           <div class="text-sm text-dim">A ${sil.toLowerCase()} piece informed by '${t.name}', sized for ${category}.</div></div>
+      <div class="row" style="gap:.5rem">
+        <span class="pill pill-violet">${sil}</span>
+        <span class="pill pill-neon">${fab}</span>
+      </div>
+      <div class="row" style="gap:.5rem;margin-top:auto">
+        <input class="input" placeholder="Refine e.g. 'more formal'" style="flex:1;padding:.55rem .85rem"/>
+        <button class="btn btn-neon">Modify</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  // tech pack
+  document.getElementById('tp-title').textContent = `${trends[0].name} — ${category[0].toUpperCase()+category.slice(1)} Piece`;
+  const cons = pick(CONSTR,4), trims = pick(TRIMS,3);
+  document.getElementById('tp-body').innerHTML = `
+    <div class="tp-row"><span class="tp-label">Category</span><span>${category}</span></div>
+    <div class="tp-row"><span class="tp-label">Fabric</span><span>Organic cotton jersey, 220 GSM</span></div>
+    <div class="tp-row"><span class="tp-label">Colors</span>
+      <span class="row" style="gap:.4rem">${hexes.slice(0,3).map(h=>`<span class="pill" style="background:${h};color:${readable(h)};border:none;font-weight:700">${h}</span>`).join('')}</span></div>
+    <div class="tp-row"><span class="tp-label">Construction</span>
+      <ul class="tp-val">${cons.map(c=>`<li>${c}</li>`).join('')}</ul></div>
+    <div class="tp-row"><span class="tp-label">Trims</span>
+      <ul class="tp-val">${trims.map(t=>`<li>${t}</li>`).join('')}</ul></div>
+    <div class="tp-row"><span class="tp-label">Measurements</span>
+      <div class="row" style="gap:.5rem">
+        <span class="pill pill-neon">chest · 106 cm</span>
+        <span class="pill pill-neon">length · 72 cm</span>
+        <span class="pill pill-neon">shoulder · 48 cm</span>
+        <span class="pill pill-neon">sleeve · 63 cm</span>
+      </div></div>
+    <div class="tp-row"><span class="tp-label">Care</span>
+      <ul class="tp-val"><li>Machine wash cold, inside out</li><li>Do not bleach</li><li>Tumble dry low</li></ul></div>`;
+}
+
+// Admin bars
+function renderAdmin(){
+  const regions = { India: 54, Europe: 38, USA: 28, Asia: 14, Global: 8 };
+  const rMax = Math.max(...Object.values(regions));
+  document.getElementById('region-bars').innerHTML = Object.entries(regions).map(([r,c])=>`
+    <div>
+      <div class="row-between"><span>${r}</span><span class="text-neon">${c}</span></div>
+      <div class="meter" style="margin-top:6px"><div class="meter-fill" style="width:${c/rMax*100}%"></div></div>
+    </div>`).join('');
+
+  const dist = {'0–0.4':3,'0.4–0.6':11,'0.6–0.8':48,'0.8–1.0':80};
+  const dMax = Math.max(...Object.values(dist));
+  document.getElementById('conf-bars').innerHTML = Object.entries(dist).map(([b,c])=>`
+    <div>
+      <div class="row-between"><span>${b}</span><span class="text-neon">${c}</span></div>
+      <div class="meter" style="margin-top:6px"><div class="meter-fill" style="width:${c/dMax*100}%"></div></div>
+    </div>`).join('');
+
+  const logs = [
+    ['2m ago',  'a3f7c1e2', 'orchestrator-1.0.0', 'V1.2.0', .87],
+    ['5m ago',  'b8c2d91f', 'orchestrator-1.0.0', 'V1.3.0', .82],
+    ['12m ago', 'c6e4a02d', 'orchestrator-1.0.0', 'V1.1.3', .74],
+    ['18m ago', 'f0ab23c1', 'orchestrator-1.0.0', 'V1.0.4', .91],
+    ['24m ago', '48dc9b71', 'orchestrator-1.0.0', 'V1.2.0', .68],
+    ['31m ago', '7a2fe510', 'orchestrator-1.0.0', 'V1.3.0', .85],
+  ];
+  document.getElementById('audit-body').innerHTML = logs.map(([w,r,m,p,c])=>`
+    <tr>
+      <td style="padding:.7rem 1rem;border-bottom:1px solid rgba(255,255,255,.06);font-family:ui-monospace,monospace;font-size:.78rem;color:var(--text-dim)">${w}</td>
+      <td style="padding:.7rem 1rem;border-bottom:1px solid rgba(255,255,255,.06);font-family:ui-monospace,monospace;font-size:.78rem">${r}</td>
+      <td style="padding:.7rem 1rem;border-bottom:1px solid rgba(255,255,255,.06);font-size:.78rem">${m}</td>
+      <td style="padding:.7rem 1rem;border-bottom:1px solid rgba(255,255,255,.06)"><span class="pill pill-violet text-xs">${p}</span></td>
+      <td style="padding:.7rem 1rem;border-bottom:1px solid rgba(255,255,255,.06);color:var(--neon)">${Math.round(c*100)}%</td>
+    </tr>`).join('');
+}
+
+// Events
+document.querySelectorAll('.tpl').forEach(el=>{
+  el.addEventListener('click', ()=> document.getElementById('prompt').value = el.dataset.p);
+});
+document.querySelectorAll('.nav-link').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    document.querySelectorAll('.nav-link').forEach(a=>a.classList.remove('active'));
+    el.classList.add('active');
+    const tab = el.dataset.tab;
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById('tab-'+tab).classList.add('active');
+    if (tab==='admin') renderAdmin();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+document.getElementById('generate').addEventListener('click', ()=>{
+  const prompt = document.getElementById('prompt').value || 'design';
+  const region = document.getElementById('region').value;
+  const category = document.getElementById('category').value;
+  const season = document.getElementById('season').value;
+  render(prompt, region, category, season);
+  // switch tab
+  document.querySelectorAll('.nav-link').forEach(a=>a.classList.remove('active'));
+  document.querySelector('[data-tab="results"]').classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-results').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// Initial render for results tab (when someone clicks it directly)
+render('summer festive wear','India','women','SS25');
+renderAdmin();
+</script>
+</body>
+</html>
